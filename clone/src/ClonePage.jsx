@@ -1166,16 +1166,15 @@ const ScratchClone = () => {
                         </button>
                       </>
                     )}
-                    <div>
-                      <div>
-                        <a
-                          href="https://github.com/kumarsuraj318/JUSPAY_TASK"
-                          target="_blank"
-                        >
-                          Github
-                        </a>
-                      </div>
-                    </div>
+                  </div>
+                  <div>
+                    <a
+                      href="https://github.com/kumarsuraj318/JUSPAY_TASK"
+                      target="_blank"
+                      className="text-black"
+                    >
+                      Github
+                    </a>
                   </div>
                   <div className="flex items-center gap-2 ">
                     <span className="text-sm font-medium text-slate-600 ">
