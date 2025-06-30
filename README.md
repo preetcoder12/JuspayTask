@@ -1,2 +1,2 @@
-# Task
-# JuspayTask
+
+![Example](images/example_shot.png)
