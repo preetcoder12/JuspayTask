@@ -1172,7 +1172,7 @@ const ScratchClone = () => {
                           href="https://github.com/kumarsuraj318/JUSPAY_TASK"
                           target="_blank"
                         >
-                          <TbBrandGithubFilled className="size-[2rem]" />
+                          Github
                         </a>
                       </div>
                     </div>
