@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
-import { FaGithub } from "react-icons/fa";
+import { TbBrandGithubFilled } from "react-icons/tb";
 
 import {
   Play,
@@ -1172,7 +1172,7 @@ const ScratchClone = () => {
                           href="https://github.com/kumarsuraj318/JUSPAY_TASK"
                           target="_blank"
                         >
-                          <FaGithub className="size-[2rem]" />
+                          <TbBrandGithubFilled className="size-[2rem]" />
                         </a>
                       </div>
                     </div>
