@@ -1,2 +1,2 @@
 
-![Example](images/example_shot.png)
+![Example](clone/public/example_shot.png)
