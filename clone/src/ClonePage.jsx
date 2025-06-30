@@ -1,5 +1,15 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
-import { Play, Square, RotateCcw, Flag, Plus, Trash2, PlayCircle } from "lucide-react";
+import { FaGithub } from "react-icons/fa";
+
+import {
+  Play,
+  Square,
+  RotateCcw,
+  Flag,
+  Plus,
+  Trash2,
+  PlayCircle,
+} from "lucide-react";
 
 const ScratchClone = () => {
   const [selectedCategory, setSelectedCategory] = useState("Motion");
@@ -33,7 +43,7 @@ const ScratchClone = () => {
     { name: "pulse", label: "Pulse" },
     { name: "swing", label: "Swing" },
     { name: "float", label: "Float" },
-    { name: "wiggle", label: "Wiggle" }
+    { name: "wiggle", label: "Wiggle" },
   ];
 
   const categories = [
@@ -117,6 +127,7 @@ const ScratchClone = () => {
         },
         { type: "show", text: "show", category: "Looks" },
         { type: "hide", text: "hide", category: "Looks" },
+        { type: "show/hide", text: "show/hide", category: "Looks" },
         {
           type: "change_size",
           text: "change size by {change}",
@@ -132,7 +143,14 @@ const ScratchClone = () => {
         {
           type: "start_animation",
           text: "start {animation} animation",
-          inputs: [{ name: "animation", type: "select", value: "bounce", options: animationTypes }],
+          inputs: [
+            {
+              name: "animation",
+              type: "select",
+              value: "bounce",
+              options: animationTypes,
+            },
+          ],
           category: "Looks",
         },
         {
@@ -257,53 +275,53 @@ const ScratchClone = () => {
     if (!sprite.isAnimating) {
       return { x: 0, y: 0, rotation: 0, scale: 1 };
     }
-    
+
     const currentTime = Date.now();
     const elapsed = currentTime - sprite.animationStartTime;
     const t = elapsed * 0.005; // Animation speed
-    
+
     switch (animationType) {
       case "bounce":
         return {
           x: 0,
           y: Math.sin(t * 4) * 20,
           rotation: 0,
-          scale: 1
+          scale: 1,
         };
       case "rotate":
         return {
           x: 0,
           y: 0,
           rotation: t * 2,
-          scale: 1
+          scale: 1,
         };
       case "pulse":
         return {
           x: 0,
           y: 0,
           rotation: 0,
-          scale: Math.max(0.5, 1 + Math.sin(t * 3) * 0.3)
+          scale: Math.max(0.5, 1 + Math.sin(t * 3) * 0.3),
         };
       case "swing":
         return {
           x: Math.sin(t * 2) * 30,
           y: 0,
           rotation: Math.sin(t * 2) * 0.3,
-          scale: 1
+          scale: 1,
         };
       case "float":
         return {
           x: Math.sin(t) * 10,
           y: Math.cos(t * 1.5) * 15,
           rotation: Math.sin(t * 0.5) * 0.2,
-          scale: 1
+          scale: 1,
         };
       case "wiggle":
         return {
           x: Math.sin(t * 8) * 5,
           y: Math.cos(t * 6) * 5,
           rotation: Math.sin(t * 10) * 0.1,
-          scale: 1
+          scale: 1,
         };
       default:
         return { x: 0, y: 0, rotation: 0, scale: 1 };
@@ -406,6 +424,15 @@ const ScratchClone = () => {
           case "hide":
             sprite.visible = false;
             break;
+          case "show/hide":
+            setSprites((prevSprites) =>
+              prevSprites.map((sprite) =>
+                sprite.id === id
+                  ? { ...sprite, visible: !sprite.visible }
+                  : sprite
+              )
+            );
+            break;
 
           case "change_size":
             const sizeChange = parseFloat(getInputValue(block, "change")) || 10;
@@ -421,7 +448,8 @@ const ScratchClone = () => {
 
           case "start_animation":
             sprite.isAnimating = true;
-            sprite.animationType = getInputValue(block, "animation") || "bounce";
+            sprite.animationType =
+              getInputValue(block, "animation") || "bounce";
             sprite.animationStartTime = Date.now();
             break;
 
@@ -582,15 +610,19 @@ const ScratchClone = () => {
   };
 
   const toggleSpriteAnimation = (spriteIndex) => {
-    setSprites(prev => prev.map((sprite, index) => 
-      index === spriteIndex 
-        ? { 
-            ...sprite, 
-            isAnimating: !sprite.isAnimating,
-            animationStartTime: !sprite.isAnimating ? Date.now() : sprite.animationStartTime
-          }
-        : sprite
-    ));
+    setSprites((prev) =>
+      prev.map((sprite, index) =>
+        index === spriteIndex
+          ? {
+              ...sprite,
+              isAnimating: !sprite.isAnimating,
+              animationStartTime: !sprite.isAnimating
+                ? Date.now()
+                : sprite.animationStartTime,
+            }
+          : sprite
+      )
+    );
   };
 
   const resetSprites = () => {
@@ -661,11 +693,13 @@ const ScratchClone = () => {
   };
 
   const updateSpriteAnimation = (spriteIndex, animationType) => {
-    setSprites(prev => prev.map((sprite, index) => 
-      index === spriteIndex 
-        ? { ...sprite, animationType: animationType }
-        : sprite
-    ));
+    setSprites((prev) =>
+      prev.map((sprite, index) =>
+        index === spriteIndex
+          ? { ...sprite, animationType: animationType }
+          : sprite
+      )
+    );
   };
 
   const renderBlock = (block, isInPalette = false) => {
@@ -698,11 +732,13 @@ const ScratchClone = () => {
                 <select
                   key={`${block.id}-select-${inputName}-${index}`}
                   value={input.value}
-                  onChange={(e) => updateBlockInput(block.id, inputName, e.target.value)}
+                  onChange={(e) =>
+                    updateBlockInput(block.id, inputName, e.target.value)
+                  }
                   className="bg-slate-50 text-slate-800 border border-slate-300 rounded-md px-2 py-1 text-xs font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  {input.options?.map(option => (
+                  {input.options?.map((option) => (
                     <option key={option.name} value={option.name}>
                       {option.label}
                     </option>
@@ -710,7 +746,7 @@ const ScratchClone = () => {
                 </select>
               );
             }
-            
+
             return (
               <input
                 key={`${block.id}-input-${inputName}-${index}`}
@@ -855,14 +891,17 @@ const ScratchClone = () => {
 
         const centerX = canvas.width / 2;
         const centerY = canvas.height / 2;
-        
+
         let spriteX = centerX + sprite.x;
         let spriteY = centerY - sprite.y;
-        let rotation = (sprite.direction - 90) * Math.PI / 180;
+        let rotation = ((sprite.direction - 90) * Math.PI) / 180;
         let scale = sprite.size / 100;
 
         // Apply animation if active - each sprite has its own animation
-        const animationOffset = getAnimationOffset(sprite.animationType, sprite);
+        const animationOffset = getAnimationOffset(
+          sprite.animationType,
+          sprite
+        );
         spriteX += animationOffset.x;
         spriteY += animationOffset.y;
         rotation += animationOffset.rotation;
@@ -883,11 +922,7 @@ const ScratchClone = () => {
 
         if (catImage) {
           // Draw the cat image centered
-          ctx.drawImage(
-            catImage,
-            -catImage.width / 2,
-            -catImage.height / 2
-          );
+          ctx.drawImage(catImage, -catImage.width / 2, -catImage.height / 2);
         } else {
           // Fallback drawing if image hasn't loaded
           ctx.fillStyle = "#ff8c1a";
@@ -901,11 +936,7 @@ const ScratchClone = () => {
         // Draw sprite info
         ctx.fillStyle = "#64748b";
         ctx.font = "11px -apple-system, BlinkMacSystemFont, sans-serif";
-        ctx.fillText(
-          `${sprite.name}`,
-          spriteX + 30,
-          spriteY - 30
-        );
+        ctx.fillText(`${sprite.name}`, spriteX + 30, spriteY - 30);
         ctx.fillText(
           `x: ${Math.round(sprite.x)} y: ${Math.round(sprite.y)}`,
           spriteX + 30,
@@ -922,7 +953,7 @@ const ScratchClone = () => {
           spriteY + 15
         );
         ctx.fillText(
-          `anim: ${sprite.isAnimating ? sprite.animationType : 'none'}`,
+          `anim: ${sprite.isAnimating ? sprite.animationType : "none"}`,
           spriteX + 30,
           spriteY + 30
         );
@@ -941,7 +972,11 @@ const ScratchClone = () => {
 
   useEffect(() => {
     const handleKeyPress = (e) => {
-      if (e.code === "Space" && e.target.tagName !== "INPUT") {
+      if (
+        e.code === "Space" &&
+        e.code === "Enter" &&
+        e.target.tagName !== "INPUT"
+      ) {
         e.preventDefault();
         if (isRunning) {
           stopExecution();
@@ -1031,13 +1066,15 @@ const ScratchClone = () => {
             Reset
           </button>
           <div className="flex-1"></div>
-          <div className="text-sm text-slate-600 bg-white/80 px-4 py-2 rounded-lg border border-slate-200">
-            Press{" "}
-            <span className="font-mono bg-slate-100 px-2 py-1 rounded">
-              Space
-            </span>{" "}
-            to {isRunning ? "stop" : "run"}
-          </div>
+          {isRunning ? (
+            <div className="text-green-600 font-semibold text-l font-mono  ">
+              Running
+            </div>
+          ) : (
+            <div className="text-red-600 font-semibold text-l font-mono  ">
+              After pressing Run you can run by either Space or Enter key{" "}
+            </div>
+          )}
         </div>
 
         {/* Workspace and Stage */}
@@ -1129,14 +1166,24 @@ const ScratchClone = () => {
                         </button>
                       </>
                     )}
+                    <div>
+                      <div>
+                        <a
+                          href="https://github.com/kumarsuraj318/JUSPAY_TASK"
+                          target="_blank"
+                        >
+                          <FaGithub className="size-[2rem]" />
+                        </a>
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2 " >
+                  <div className="flex items-center gap-2 ">
                     <span className="text-sm font-medium text-slate-600 ">
                       Animation:
                     </span>
                     <select
                       value={sprites[selectedSprite]?.animationType || "bounce"}
-                      onChange={(e) => 
+                      onChange={(e) =>
                         updateSpriteAnimation(selectedSprite, e.target.value)
                       }
                       className="bg-gray-400 border border-slate-300 rounded-lg px-3 py-1 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
